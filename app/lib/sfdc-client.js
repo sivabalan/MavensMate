@@ -33,9 +33,9 @@ var config        = require('../config');
  */
 function SalesforceClient(opts) {
   util.applyProperties(this, opts);
-  this.apiVersion = config.get('mm_api_version') || '36.0';
-  this.clientId = process.env.SFDC_OAUTH_CLIENT_ID || '3MVG9uudbyLbNPZP7kLgoRiWVRqiN8gFcKwdAlztVnjgbj9shSk1vMXJNmV7W0ciFbeYiaP9D4tLfBBD06l_7'
-  this.callbackUrl = process.env.SFDC_OAUTH_CALLBACK_URL || 'https://localhost:56248/sfdc/auth/callback'
+  this.apiVersion = config.get('mm_api_version') || '41.0';
+  this.clientId = process.env.SFDC_OAUTH_CLIENT_ID || opts.clientId || '3MVG9uudbyLbNPZP7kLgoRiWVRqiN8gFcKwdAlztVnjgbj9shSk1vMXJNmV7W0ciFbeYiaP9D4tLfBBD06l_7'
+  this.callbackUrl = process.env.SFDC_OAUTH_CALLBACK_URL || 'http://localhost:56248/sfdc/auth/callback'
   logger.debug('initiating SalesforceClient: ');
 }
 
@@ -310,6 +310,14 @@ SalesforceClient.prototype.getAccessToken = function() {
  */
 SalesforceClient.prototype.getInstanceUrl = function() {
   return this.instanceUrl || this.conn.instanceUrl || undefined;
+};
+
+/**
+ * Returns client id (OAuth Consumer Key) for this client
+ * @return {String}
+ */
+SalesforceClient.prototype.getClientId = function() {
+  return this.clientId || this.conn.clientId || undefined;
 };
 
 /**
